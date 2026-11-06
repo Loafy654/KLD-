@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLD Student Portal - Kolehiyo ng Lungsod ng Dasmariñas</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------------------------------------------------
+           PURE CSS THEMING SYSTEM (ZERO JAVASCRIPT)
+           ------------------------------------------------------------- */
+        :root {
+            --bg-main: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(255, 255, 255, 0.98);
+            --bg-sidebar: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --text-title: #0f172a;
+            --text-body: #475569;
+            --text-muted: #94a3b8;
+            --border-color: rgba(226, 232, 240, 0.9);
+            --accent-green: #059669;
+            --accent-light-green: #10b981;
+            --accent-gold: #f59e0b;
+            --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+            --modal-bg: rgba(255, 255, 255, 0.95);
+            --overlay-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        /* Pure CSS Dark Mode Trigger */
+        #theme-toggle:checked ~ .app-wrapper {
+            --bg-main: #0b1329;
+            --bg-card: rgba(26, 38, 66, 0.65);
+            --bg-card-hover: rgba(33, 49, 84, 0.9);
+            --bg-sidebar: #0f172a;
+            --bg-glass: rgba(15, 23, 42, 0.8);
+            --text-title: #f8fafc;
+            --text-body: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-green: #10b981;
+            --accent-light-green: #34d399;
+            --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+            --modal-bg: rgba(15, 23, 42, 0.95);
+            --overlay-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Reset & Layout Rules */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b1329;
+            color: var(--text-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hidden-checkbox {
+            display: none !important;
+        }
+
+        .app-wrapper {
+            background-color: var(--bg-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 1024px) {
+            .app-wrapper {
+                flex-direction: row;
+            }
+        }
+
+        /* Modern Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-green);
+            border-radius: 99px;
+        }
+
+        /* -------------------------------------------------------------
+           SIDEBAR STYLING
+           ------------------------------------------------------------- */
+        .sidebar {
+            width: 100%;
+            background-color: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 30;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                width: 280px;
+                min-height: 100vh;
+                border-bottom: none;
+                border-right: 1px solid var(--border-color);
+                position: sticky;
+                top: 0;
+                height: 100vh;
+            }
+        }
+
+        .brand-header {
+         padding: 20px;
+         display: flex;
+         align-items: center;
+         gap: 14px;
+         border-bottom: 1px solid var(--border-color);
+        }
+
+        .kld-logo-container {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #047857, #10b981);
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .kld-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            background-color: #ffffff;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--accent-green);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: var(--text-body);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--accent-green);
+            color: #ffffff !important;
+            box-shadow: 0 8px 16px -4px rgba(5, 150, 105, 0.4);
+            transform: translateX(4px);
+        }
+
+        .nav-item i {
+            width: 20px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .sidebar-bottom {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* -------------------------------------------------------------
+           PURE CSS THEME TOGGLE SWITCH
+           ------------------------------------------------------------- */
+        .theme-switch-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: var(--bg-main);
+            border-radius: 14px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            user-select: none;
+        }
+
+        .theme-switch-btn {
+            width: 44px;
+            height: 24px;
+            background-color: var(--text-muted);
+            border-radius: 99px;
+            padding: 2px;
+            position: relative;
+        }
+
+        .theme-switch-ball {
+            width: 20px;
+            height: 20px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transform: translateX(0);
+        }
+
+        #theme-toggle:checked ~ .app-wrapper .theme-switch-btn {
+            background-color: var(--accent-green);
+        }
+
+        #theme-toggle:checked ~ .app-wrapper .theme-switch-ball {
+            transform: translateX(20px);
+        }
+
+        /* -------------------------------------------------------------
+           MAIN CONTENT AREA
+           ------------------------------------------------------------- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow-y: auto;
+        }
+
+        /* Top Header Navigation */
+        .top-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 420px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input-btn {
+            width: 100%;
+            padding: 10px 16px 10px 42px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-title);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .action-icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .action-icon-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .badge-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ef4444;
+        }
+
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--accent-green);
+        }
+
+        /* -------------------------------------------------------------
+           DASHBOARD CONTENT GRID
+           ------------------------------------------------------------- */
+        .content-container {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #047857 0%, #10b981 50%, #064e3b 100%);
+            border-radius: 24px;
+            padding: 32px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -10px rgba(5, 150, 105, 0.35);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            right: -40px;
+            bottom: -40px;
+            width: 240px;
+            height: 240px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pulse-glow 6s ease-in-out infinite alternate;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .hero-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .hero-meta-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .meta-pill {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(6px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Quick Stats Row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card-label {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+        }
+
+        .stat-card-label:hover {
+            transform: translateY(-4px);
+            background-color: var(--bg-card-hover);
+            border-color: var(--accent-green);
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .stat-info h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-info h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.2;
+            margin-top: 2px;
+        }
+
+        /* Section Titles */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Classmates Grid */
+        .classmates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .student-card-label {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card-label:hover {
+            transform: translateY(-4px);
+            background-color: var(--bg-card-hover);
+            border-color: var(--accent-green);
+        }
+
+        .student-card-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--accent-green);
+            opacity: 0;
+        }
+
+        .student-card-label:hover::before {
+            opacity: 1;
+        }
+
+        .student-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            object-fit: cover;
+            background-color: var(--bg-main);
+            flex-shrink: 0;
+        }
+
+        .student-meta h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .student-meta p {
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Enrolled Subjects List */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card-label {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+        }
+
+        .course-card-label:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-green);
+            box-shadow: 0 14px 28px -6px rgba(5, 150, 105, 0.15);
+        }
+
+        .course-badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .course-code-badge {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            background-color: rgba(5, 150, 105, 0.12);
+            color: var(--accent-green);
+            letter-spacing: 0.05em;
+        }
+
+        .units-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .course-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.35;
+        }
+
+        .course-time-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--text-body);
+            border-top: 1px border-dashed var(--border-color);
+            padding-top: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* -------------------------------------------------------------
+           PURE CSS MODAL OVERLAYS (ZERO JS MECHANICS)
+           ------------------------------------------------------------- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--overlay-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-box {
+            background-color: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 520px;
+            padding: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            color: var(--text-body);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--bg-main);
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-close-btn:hover {
+            background-color: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
+
+        .modal-header-tag {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--accent-green);
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-title);
+            margin-bottom: 14px;
+        }
+
+        .modal-body {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-detail-card {
+            background-color: var(--bg-main);
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-detail-card span:first-child {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .modal-detail-card span:last-child {
+            font-weight: 700;
+            color: var(--text-title);
+            font-size: 0.85rem;
+        }
+
+        /* TRIGGER STATE: Checkbox :checked -> Display Modal */
+        .modal-state-toggle:checked + .modal-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-state-toggle:checked + .modal-overlay .modal-box {
+            transform: scale(1);
+        }
+
+        /* -------------------------------------------------------------
+           KEYFRAME ANIMATIONS
+           ------------------------------------------------------------- */
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.1; }
+            100% { transform: scale(1.15); opacity: 0.25; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. PURE CSS DARK MODE CONTROLLER -->
+    <input type="checkbox" id="theme-toggle" class="hidden-checkbox">
+
+    <!-- 2. PURE CSS MODAL CONTROLLER INPUTS -->
+    <input type="checkbox" id="modal-notif" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-profile" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-search" class="modal-state-toggle hidden-checkbox">
+    
+    <!-- Student Modals -->
+    <input type="checkbox" id="modal-student-1" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-student-2" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-student-3" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-student-4" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-student-5" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-student-6" class="modal-state-toggle hidden-checkbox">
+
+    <!-- Course Modals -->
+    <input type="checkbox" id="modal-course-1" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-2" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-3" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-4" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-5" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-6" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-7" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-8" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-9" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-course-10" class="modal-state-toggle hidden-checkbox">
+
+    <!-- Stat Modals -->
+    <input type="checkbox" id="modal-stat-1" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-stat-2" class="modal-state-toggle hidden-checkbox">
+    <input type="checkbox" id="modal-stat-3" class="modal-state-toggle hidden-checkbox">
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="app-wrapper">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div>
+                <!-- School Brand Header -->
+                <div class="brand-header">
+                    <div class="kld-logo-container">
+                        <img src="image1.png" alt="KLD Logo" class="kld-logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23047857\'/><path d=\'M50,20 L80,75 L20,75 Z\' fill=\'%23f59e0b\'/></svg>';">
+                    </div>
+                    <div>
+                        <h1 class="brand-title">KLD PORTAL</h1>
+                        <p class="brand-sub">Dasmarinas City</p>
+                    </div>
+                </div>
+
+                <!-- Navigation List -->
+                <nav class="nav-menu">
+                    <a href="#dashboard" class="nav-item active">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#courses" class="nav-item">
+                        <i class="fa-solid fa-book-bookmark"></i>
+                        <span>Enrolled Subjects</span>
+                    </a>
+                    <a href="#classmates" class="nav-item">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Classmates</span>
+                    </a>
+                    <a href="#schedule" class="nav-item">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Class Schedule</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Sidebar Footer Controls -->
+            <div class="sidebar-bottom">
+                <!-- Pure CSS Theme Switcher -->
+                <label for="theme-toggle" class="theme-switch-label">
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--text-title); display:flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-moon" style="color:var(--accent-green);"></i> Appearance Mode
+                    </span>
+                    <div class="theme-switch-btn">
+                        <div class="theme-switch-ball"></div>
+                    </div>
+                </label>
+            </div>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="main-content">
+            
+            <!-- TOP NAVBAR -->
+            <header class="top-navbar">
+                <!-- Pure CSS Triggered Search Bar -->
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <label for="modal-search" class="search-input-btn">
+                        Search subjects, faculty, announcements...
+                    </label>
+                </div>
+
+                <div class="navbar-actions">
+                    <!-- Notification Bell Label Trigger -->
+                    <label for="modal-notif" class="action-icon-btn">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="badge-dot"></span>
+                    </label>
+
+                    <!-- User Active Profile Label Trigger -->
+                    <label for="modal-profile" class="user-profile-btn">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Nathaniel&backgroundColor=10b981" alt="Nathaniel Sanchez" class="avatar-img">
+                        <div style="display:flex; flex-direction:column;">
+                            <span style="font-size:0.88rem; font-weight:800; color:var(--text-title);">Nathaniel Sanchez</span>
+                            <span style="font-size:0.7rem; color:var(--accent-green); font-weight:700;">BSCS 104 • Regular</span>
+                        </div>
+                    </label>
+                </div>
+            </header>
+
+            <!-- BODY CONTENT CONTAINER -->
+            <div class="content-container">
+
+                <!-- OFFICIAL KLD HERO BANNER -->
+                <section class="hero-banner">
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-certificate" style="color:#f59e0b;"></i> Certificate of Registration (COR) Verified
+                    </div>
+                    <h2 class="hero-title">Welcome Back, Nathaniel James F. Sanchez!</h2>
+                    <p class="hero-desc">
+                        Official Academic Record for <strong>First Term, AY 2026-2027</strong> at Kolehiyo ng Lungsod ng Dasmariñas. All 10 registered courses and laboratory schedules are active.
+                    </p>
+                    <div class="hero-meta-grid">
+                        <div class="meta-pill"><i class="fa-solid fa-id-card" style="color:#10b981;"></i> Student ID: KLD-2026-024304</div>
+                        <div class="meta-pill"><i class="fa-solid fa-graduation-cap" style="color:#f59e0b;"></i> Program: BSCS</div>
+                        <div class="meta-pill"><i class="fa-solid fa-users-rectangle"></i> Section: BSCS 104</div>
+                        <div class="meta-pill"><i class="fa-solid fa-layer-group"></i> Load: 21 Total Units</div>
+                    </div>
+                </section>
+
+                <!-- QUICK STATS ROW -->
+                <section class="stats-grid">
+                    <label for="modal-stat-1" class="stat-card-label">
+                        <div class="stat-icon" style="background:rgba(16,185,129,0.12); color:#10b981;">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Total Courses</h4>
+                            <h3>10 Enrolled</h3>
+                        </div>
+                    </label>
+
+                    <label for="modal-stat-2" class="stat-card-label">
+                        <div class="stat-icon" style="background:rgba(245,158,11,0.12); color:#f59e0b;">
+                            <i class="fa-solid fa-weight-hanging"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Academic Load</h4>
+                            <h3>21 Units</h3>
+                        </div>
+                    </label>
+
+                    <label for="modal-stat-3" class="stat-card-label">
+                        <div class="stat-icon" style="background:rgba(59,130,246,0.12); color:#3b82f6;">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>Academic Status</h4>
+                            <h3>Regular</h3>
+                        </div>
+                    </label>
+                </section>
+
+                <!-- CLASSMATES & TEAM ROSTER -->
+                <section id="classmates">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fa-solid fa-users" style="color:var(--accent-green);"></i> Student Roster & Group Members</h3>
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--accent-green);">6 Registered Students</span>
+                    </div>
+
+                    <div class="classmates-grid">
+                        <!-- 1. Nathaniel Sanchez -->
+                        <label for="modal-student-1" class="student-card-label">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Nathaniel&backgroundColor=10b981" alt="Nathaniel Sanchez" class="student-avatar">
+                            <div class="student-meta">
+                                <h4>Nathaniel Sanchez</h4>
+                                <p>Network & Security Lead</p>
+                            </div>
+                        </label>
+
+                        <!-- 2. Elyn Camanag -->
+                        <label for="modal-student-2" class="student-card-label">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Elyn&backgroundColor=34d399" alt="Elyn Camanag" class="student-avatar">
+                            <div class="student-meta">
+                                <h4>Elyn Camanag</h4>
+                                <p>Team Lead / Analyst</p>
+                            </div>
+                        </label>
+
+                        <!-- 3. Mark Cyruz Defelipe -->
+                        <label for="modal-student-3" class="student-card-label">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mark&backgroundColor=3b82f6" alt="Mark Cyruz Defelipe" class="student-avatar">
+                            <div class="student-meta">
+                                <h4>Mark Cyruz Defelipe</h4>
+                                <p>Full Stack Developer</p>
+                            </div>
+                        </label>
+
+                        <!-- 4. Micah Tapawan -->
+                        <label for="modal-student-4" class="student-card-label">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Micah&backgroundColor=a855f7" alt="Micah Tapawan" class="student-avatar">
+                            <div class="student-meta">
+                                <h4>Micah Tapawan</h4>
+                                <p>UI/UX Designer</p>
+                            </div>
+                        </label>
+
+                        <!-- 5. Raizhan Jhoy Bato -->
+                        <label for="modal-student-5" class="student-card-label">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Raizhan&backgroundColor=f59e0b" alt="Raizhan Jhoy Bato" class="student-avatar">
+                            <div class="student-meta">
+                                <h4>Raizhan Jhoy Bato</h4>
+                                <p>Database Specialist</p>
+                            </div>
+                        </label>
+
+                        <!-- 6. Reign Marien Bato -->
+                        <label for="modal-student-6" class="student-card-label">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Reign&backgroundColor=ec4899" alt="Reign Marien Bato" class="student-avatar">
+                            <div class="student-meta">
+                                <h4>Reign Marien Bato</h4>
+                                <p>QA & Systems Tester</p>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- ENROLLED SUBJECTS GRID (ALL 10 OFFICIAL COURSES) -->
+                <section id="courses">
+                    <div class="section-header">
+                        <h3 class="section-title"><i class="fa-solid fa-graduation-cap" style="color:var(--accent-green);"></i> Enrolled Courses (First Term)</h3>
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">Click any course for schedule details</span>
+                    </div>
+
+                    <div class="courses-grid">
+                        
+                        <!-- 1. GEC006 -->
+                        <label for="modal-course-1" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">GEC006</span>
+                                <span class="units-badge">3 Units</span>
+                            </div>
+                            <h4 class="course-name">Science, Technology and Society</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Wed 10:00 AM - 11:30 AM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1701</div>
+                            </div>
+                        </label>
+
+                        <!-- 2. GEE003 -->
+                        <label for="modal-course-2" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">GEE003</span>
+                                <span class="units-badge">3 Units</span>
+                            </div>
+                            <h4 class="course-name">Living in the IT Era</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Tue 10:00 AM - 11:30 AM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1704</div>
+                            </div>
+                        </label>
+
+                        <!-- 3. NSTP001 -->
+                        <label for="modal-course-3" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">NSTP001</span>
+                                <span class="units-badge">3 Units</span>
+                            </div>
+                            <h4 class="course-name">National Service Training Program 1</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Mon 10:00 AM - 1:00 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1703</div>
+                            </div>
+                        </label>
+
+                        <!-- 4. PE001 -->
+                        <label for="modal-course-4" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">PE001</span>
+                                <span class="units-badge">2 Units</span>
+                            </div>
+                            <h4 class="course-name">PATHFit1</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Mon 11:00 AM - 1:00 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 2607-2608</div>
+                            </div>
+                        </label>
+
+                        <!-- 5. COMP101 Lecture -->
+                        <label for="modal-course-5" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">COMP101</span>
+                                <span class="units-badge">3 Units</span>
+                            </div>
+                            <h4 class="course-name">Introduction to Computing</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Wed 3:00 PM - 5:00 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1503</div>
+                            </div>
+                        </label>
+
+                        <!-- 6. COMP101 Lab -->
+                        <label for="modal-course-6" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge" style="background:rgba(59,130,246,0.12); color:#3b82f6;">COMP101 LAB</span>
+                                <span class="units-badge">Lab Session</span>
+                            </div>
+                            <h4 class="course-name">Introduction to Computing - Laboratory</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:#3b82f6;"></i> Wed 1:00 PM - 3:00 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1301</div>
+                            </div>
+                        </label>
+
+                        <!-- 7. COMP102 Lecture -->
+                        <label for="modal-course-7" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">COMP102</span>
+                                <span class="units-badge">3 Units</span>
+                            </div>
+                            <h4 class="course-name">Computer Programming 1</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Tue 3:00 PM - 5:00 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1503</div>
+                            </div>
+                        </label>
+
+                        <!-- 8. COMP102 Lab -->
+                        <label for="modal-course-8" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge" style="background:rgba(59,130,246,0.12); color:#3b82f6;">COMP102 LAB</span>
+                                <span class="units-badge">Lab Session</span>
+                            </div>
+                            <h4 class="course-name">Computer Programming 1 - Laboratory</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:#3b82f6;"></i> Tue 1:00 PM - 3:00 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1309</div>
+                            </div>
+                        </label>
+
+                        <!-- 9. COSC101 -->
+                        <label for="modal-course-9" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge">COSC101</span>
+                                <span class="units-badge">3 Units</span>
+                            </div>
+                            <h4 class="course-name">Discrete Structures 1</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:var(--accent-green);"></i> Mon 1:00 PM - 2:30 PM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1704</div>
+                            </div>
+                        </label>
+
+                        <!-- 10. REGAL100 -->
+                        <label for="modal-course-10" class="course-card-label">
+                            <div class="course-badge-row">
+                                <span class="course-code-badge" style="background:rgba(245,158,11,0.12); color:#f59e0b;">REGAL100</span>
+                                <span class="units-badge">1 Unit</span>
+                            </div>
+                            <h4 class="course-name">On Becoming Regals</h4>
+                            <div class="course-time-info">
+                                <div class="info-row"><i class="fa-solid fa-clock" style="color:#f59e0b;"></i> Mon 10:00 AM - 11:00 AM</div>
+                                <div class="info-row"><i class="fa-solid fa-door-open"></i> Room 1703</div>
+                            </div>
+                        </label>
+
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- -------------------------------------------------------------
+         PURE CSS MODAL CONTAINERS & OVERLAYS
+         ------------------------------------------------------------- -->
+    
+    <!-- Profile Modal -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-profile" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Official Student Profile</div>
+            <h3 class="modal-title">Sanchez, Nathaniel James F.</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Student Number</span><span>KLD-2026-024304</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS (Computer Science)</span></div>
+                <div class="modal-detail-card"><span>Year & Section</span><span>BSCS 104</span></div>
+                <div class="modal-detail-card"><span>Enrollment Status</span><span style="color:#10b981;">Regular Student</span></div>
+                <div class="modal-detail-card"><span>Total Academic Units</span><span>21 Units</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-notif" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Portal Notifications</div>
+            <h3 class="modal-title">KLD Announcements</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>COR Validated</span><span>First Term 2026-2027 Approved</span></div>
+                <div class="modal-detail-card"><span>Laboratory Room</span><span>COMP101 Lab assigned to Room 1301</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-search" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">KLD Portal Search</div>
+            <h3 class="modal-title">Find Information</h3>
+            <div class="modal-body">
+                <div style="background:var(--bg-main); padding:12px; border-radius:12px; border:1px solid var(--border-color);">
+                    <input type="text" placeholder="Type course code (e.g. COMP101)..." style="width:100%; border:none; background:transparent; outline:none; color:var(--text-title); font-size:0.9rem;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Modals (1-6) -->
+    <!-- 1. Nathaniel -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-student-1" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Student Profile</div>
+            <h3 class="modal-title">Nathaniel Sanchez</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Role</span><span>Network & Security Lead</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS 104</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Elyn -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-student-2" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Student Profile</div>
+            <h3 class="modal-title">Elyn Camanag</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Role</span><span>Team Lead / Systems Analyst</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS 104</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Mark -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-student-3" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Student Profile</div>
+            <h3 class="modal-title">Mark Cyruz Defelipe</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Role</span><span>Full Stack Developer</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS 104</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Micah -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-student-4" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Student Profile</div>
+            <h3 class="modal-title">Micah Tapawan</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Role</span><span>UI/UX & Graphics Designer</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS 104</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Raizhan -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-student-5" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Student Profile</div>
+            <h3 class="modal-title">Raizhan Jhoy Bato</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Role</span><span>Database Specialist</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS 104</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Reign -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-student-6" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Student Profile</div>
+            <h3 class="modal-title">Reign Marien Bato</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Role</span><span>QA & Systems Tester</span></div>
+                <div class="modal-detail-card"><span>Program</span><span>BSCS 104</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Modals (1-10) -->
+    <!-- Course 1: GEC006 -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-1" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">GEC006 - Science, Technology and Society</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>3 Units</span></div>
+                <div class="modal-detail-card"><span>Synchronous Day/Time</span><span>Wednesday 10:00AM - 11:30AM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1701</span></div>
+                <div class="modal-detail-card"><span>Asynchronous Day/Time</span><span>Thursday 3:30PM - 5:00PM</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 2: GEE003 -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-2" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">GEE003 - Living in the IT Era</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>3 Units</span></div>
+                <div class="modal-detail-card"><span>Synchronous Day/Time</span><span>Tuesday 10:00AM - 11:30AM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1704</span></div>
+                <div class="modal-detail-card"><span>Asynchronous Day/Time</span><span>Thursday 5:00PM - 6:30PM</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 3: NSTP001 -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-3" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">NSTP001 - National Service Training Program 1</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>3 Units</span></div>
+                <div class="modal-detail-card"><span>Day & Time</span><span>Monday 10:00AM - 1:00PM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1703</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 4: PE001 -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-4" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">PE001 - PATHFit1</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>2 Units</span></div>
+                <div class="modal-detail-card"><span>Day & Time</span><span>Monday 11:00AM - 1:00PM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>2607-2608</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 5: COMP101 Lecture -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-5" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">COMP101 - Introduction to Computing</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>3 Units</span></div>
+                <div class="modal-detail-card"><span>Synchronous Day/Time</span><span>Wednesday 3:00PM - 5:00PM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1503</span></div>
+                <div class="modal-detail-card"><span>Asynchronous Day/Time</span><span>Thursday 12:00PM - 1:00PM</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 6: COMP101 Lab -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-6" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Laboratory Session</div>
+            <h3 class="modal-title">COMP101 - Introduction to Computing (Lab)</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Type</span><span>Hands-on Laboratory</span></div>
+                <div class="modal-detail-card"><span>Day & Time</span><span>Wednesday 1:00PM - 3:00PM</span></div>
+                <div class="modal-detail-card"><span>Lab Room</span><span>1301</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 7: COMP102 Lecture -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-7" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">COMP102 - Computer Programming 1</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>3 Units</span></div>
+                <div class="modal-detail-card"><span>Synchronous Day/Time</span><span>Tuesday 3:00PM - 5:00PM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1503</span></div>
+                <div class="modal-detail-card"><span>Asynchronous Day/Time</span><span>Thursday 10:00AM - 11:00AM</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 8: COMP102 Lab -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-8" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Laboratory Session</div>
+            <h3 class="modal-title">COMP102 - Computer Programming 1 (Lab)</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Type</span><span>Programming Lab</span></div>
+                <div class="modal-detail-card"><span>Day & Time</span><span>Tuesday 1:00PM - 3:00PM</span></div>
+                <div class="modal-detail-card"><span>Lab Room</span><span>1309</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 9: COSC101 -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-9" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">COSC101 - Discrete Structures 1</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>3 Units</span></div>
+                <div class="modal-detail-card"><span>Synchronous Day/Time</span><span>Monday 1:00PM - 2:30PM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1704</span></div>
+                <div class="modal-detail-card"><span>Asynchronous Day/Time</span><span>Thursday 2:00PM - 3:30PM</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course 10: REGAL100 -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-course-10" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Course Information</div>
+            <h3 class="modal-title">REGAL100 - On Becoming Regals</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Units</span><span>1 Unit</span></div>
+                <div class="modal-detail-card"><span>Day & Time</span><span>Monday 10:00AM - 11:00AM</span></div>
+                <div class="modal-detail-card"><span>Room</span><span>1703</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat 1 Modal -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-stat-1" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Academic Summary</div>
+            <h3 class="modal-title">Course Load Details</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Lecture Subjects</span><span>7 Courses</span></div>
+                <div class="modal-detail-card"><span>Laboratory Sessions</span><span>2 Labs</span></div>
+                <div class="modal-detail-card"><span>Institutional Course</span><span>1 Course</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat 2 Modal -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-stat-2" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Academic Summary</div>
+            <h3 class="modal-title">Unit Load Breakdown</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Academic Credit Units</span><span>21 Units</span></div>
+                <div class="modal-detail-card"><span>Status</span><span>Maximum Allowed Load</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat 3 Modal -->
+    <div class="modal-overlay">
+        <div class="modal-box">
+            <label for="modal-stat-3" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></label>
+            <div class="modal-header-tag">Registration Status</div>
+            <h3 class="modal-title">Regular Student Standing</h3>
+            <div class="modal-body">
+                <div class="modal-detail-card"><span>Standing</span><span>Regular (Fully Enrolled)</span></div>
+                <div class="modal-detail-card"><span>Term</span><span>First Term, AY 2026-2027</span></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
