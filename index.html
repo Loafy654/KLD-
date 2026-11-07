@@ -69,6 +69,110 @@
             visibility: hidden !important;
         }
 
+        /* 6-SECOND PURE CSS LOADING OVERLAY */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #090d16;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            color: #ffffff;
+            animation: fadeOutLoader 0.6s ease 6s forwards;
+            pointer-events: auto;
+        }
+
+        @keyframes fadeOutLoader {
+            0% { opacity: 1; pointer-events: auto; }
+            99% { opacity: 0; pointer-events: auto; }
+            100% { opacity: 0; pointer-events: none; display: none; }
+        }
+
+        .loader-logo-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader-logo {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: contain;
+            animation: pulseLoaderLogo 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseLoaderLogo {
+            0%, 100% { transform: scale(0.95); filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.4)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.8)); }
+        }
+
+        .loader-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba(255, 255, 255, 0.08);
+            border-top: 4px solid #10b981;
+            border-right: 4px solid #10b981;
+            border-radius: 50%;
+            animation: spinRing 1.2s linear infinite;
+        }
+
+        @keyframes spinRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #f8fafc;
+        }
+
+        .loader-subtext {
+            font-size: 0.85rem;
+            color: #10b981;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .loader-progress-bar {
+            width: 220px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #059669, #10b981);
+            width: 0%;
+            animation: fillProgress 6s linear forwards;
+            border-radius: 10px;
+        }
+
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
         .app-container {
             display: flex;
             width: 100vw;
@@ -146,6 +250,35 @@
             background: var(--primary-light);
             color: var(--primary);
             transform: translateX(6px);
+        }
+
+        .tech-badge-container {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .tech-badge {
+            background: var(--primary-light);
+            border: 1px solid var(--primary-glow);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .tech-badge-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .tech-badge-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
         }
 
         .main-content {
@@ -349,6 +482,50 @@
             transform: rotate(15deg) scale(1.1);
         }
 
+        /* PURE CSS TAB SYSTEM FOR DASHBOARD VS DETAILED SCHEDULE */
+        .tab-input {
+            display: none !important;
+        }
+
+        .tab-controls {
+            display: flex;
+            gap: 10px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            width: fit-content;
+        }
+
+        .tab-label {
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.25s ease;
+        }
+
+        #tab-overview:checked ~ .app-container .tab-label-overview,
+        #tab-timetable:checked ~ .app-container .tab-label-timetable {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        #tab-overview:checked ~ .app-container #pane-overview {
+            display: block;
+        }
+
+        #tab-timetable:checked ~ .app-container #pane-timetable {
+            display: block;
+        }
+
         .grid-layout {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -475,6 +652,61 @@
 
         .student-role {
             font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* PURE CSS TIMETABLE FEATURE */
+        .timetable-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .timetable-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            transition: all 0.25s ease;
+        }
+
+        .timetable-row:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .day-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .timetable-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .timetable-sub {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .timetable-meta {
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
 
@@ -632,7 +864,6 @@
             text-align: right;
         }
 
-        /* Mobile Responsiveness Media Query */
         @media (max-width: 900px) {
             .app-container {
                 flex-direction: column;
@@ -671,7 +902,24 @@
 </head>
 <body>
 
+    <!-- 6-SECOND PURE CSS LOADING OVERLAY -->
+    <div class="loading-screen">
+        <div class="loader-logo-wrapper">
+            <div class="loader-ring"></div>
+            <img src="image1.png" alt="KLD Logo" class="loader-logo" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'48\' fill=\'%23059669\'/><path d=\'M50 20 L75 40 L75 75 L25 75 L25 40 Z\' fill=\'%23fef08a\'/><text x=\'50\' y=\'58\' font-size=\'16\' font-weight=\'bold\' text-anchor=\'middle\' fill=\'%23059669\'>KLD</text></svg>';">
+        </div>
+        <div class="loader-text">Kolehiyo ng Lungsod ng Dasmariñas</div>
+        <div class="loader-subtext">Loading BSCS 104 Student Portal...</div>
+        <div class="loader-progress-bar">
+            <div class="loader-progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- PURE CSS CONTROLS FOR MODALS & LIGHT/DARK THEME -->
     <input type="checkbox" id="theme-toggle" class="state-toggle">
+
+    <input type="radio" id="tab-overview" name="dashboard-tabs" class="tab-input" checked>
+    <input type="radio" id="tab-timetable" name="dashboard-tabs" class="tab-input">
 
     <input type="checkbox" id="modal-profile" class="modal-state">
     <input type="checkbox" id="modal-gec006" class="modal-state">
@@ -1066,6 +1314,13 @@
                 <label for="modal-nav-grades" class="nav-item-btn">📊 Grades & COR</label>
                 <label for="modal-nav-settings" class="nav-item-btn">⚙️ Settings</label>
             </nav>
+
+            <div class="tech-badge-container">
+                <div class="tech-badge">
+                    <div class="tech-badge-title">⚡ Pure Codebase</div>
+                    <div class="tech-badge-sub">100% Pure HTML & CSS Only (Zero JS)</div>
+                </div>
+            </div>
         </aside>
 
         <main class="main-content">
@@ -1107,162 +1362,213 @@
                 </label>
             </section>
 
-            <div class="grid-layout">
-                <div>
-                    <div class="section-title">
-                        <span>Enrolled Subjects (10)</span>
-                        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Click card for full details</span>
+            <!-- PURE CSS TAB SELECTION -->
+            <div class="tab-controls">
+                <label for="tab-overview" class="tab-label tab-label-overview">📊 Course Grid</label>
+                <label for="tab-timetable" class="tab-label tab-label-timetable">📅 Weekly Timetable</label>
+            </div>
+
+            <!-- TAB 1: OVERVIEW GRID -->
+            <div class="tab-pane" id="pane-overview">
+                <div class="grid-layout">
+                    <div>
+                        <div class="section-title">
+                            <span>Enrolled Subjects (10)</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">Click card for full details</span>
+                        </div>
+
+                        <div class="subject-grid">
+                            <label for="modal-gec006" class="course-card">
+                                <span class="course-code">GEC006 • 3 Units</span>
+                                <div class="course-title">Science, Technology and Society</div>
+                                <div class="course-meta">
+                                    <span>Wed 10:00AM - 11:30AM</span>
+                                    <span>Room 1701</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-gee003" class="course-card">
+                                <span class="course-code">GEE003 • 3 Units</span>
+                                <div class="course-title">Living in the IT Era</div>
+                                <div class="course-meta">
+                                    <span>Tue 10:00AM - 11:30AM</span>
+                                    <span>Room 1704</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-nstp001" class="course-card">
+                                <span class="course-code">NSTP001 • 3 Units</span>
+                                <div class="course-title">National Service Training Program 1</div>
+                                <div class="course-meta">
+                                    <span>Mon 10:00AM - 1:00PM</span>
+                                    <span>Room 1703</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-pe001" class="course-card">
+                                <span class="course-code">PE001 • 2 Units</span>
+                                <div class="course-title">PATHFit1</div>
+                                <div class="course-meta">
+                                    <span>Mon 11:00AM - 1:00PM</span>
+                                    <span>Room 2607-2608</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-comp101-lec" class="course-card">
+                                <span class="course-code">COMP101 • 3 Units</span>
+                                <div class="course-title">Introduction to Computing</div>
+                                <div class="course-meta">
+                                    <span>Wed 3:00PM - 5:00PM</span>
+                                    <span>Room 1503</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-comp101-lab" class="course-card">
+                                <span class="course-code">COMP101 • Lab</span>
+                                <div class="course-title">Intro to Computing (Laboratory)</div>
+                                <div class="course-meta">
+                                    <span>Wed 1:00PM - 3:00PM</span>
+                                    <span>Room 1301</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-comp102-lec" class="course-card">
+                                <span class="course-code">COMP102 • 3 Units</span>
+                                <div class="course-title">Computer Programming 1</div>
+                                <div class="course-meta">
+                                    <span>Tue 3:00PM - 5:00PM</span>
+                                    <span>Room 1503</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-comp102-lab" class="course-card">
+                                <span class="course-code">COMP102 • Lab</span>
+                                <div class="course-title">Computer Programming 1 (Lab)</div>
+                                <div class="course-meta">
+                                    <span>Tue 1:00PM - 3:00PM</span>
+                                    <span>Room 1309</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-cosc101" class="course-card">
+                                <span class="course-code">COSC101 • 3 Units</span>
+                                <div class="course-title">Discrete Structures 1</div>
+                                <div class="course-meta">
+                                    <span>Mon 1:00PM - 2:30PM</span>
+                                    <span>Room 1704</span>
+                                </div>
+                            </label>
+
+                            <label for="modal-regal100" class="course-card">
+                                <span class="course-code">REGAL100 • 1 Unit</span>
+                                <div class="course-title">On Becoming Regals</div>
+                                <div class="course-meta">
+                                    <span>Mon 10:00AM - 11:00AM</span>
+                                    <span>Room 1703</span>
+                                </div>
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="subject-grid">
-                        <label for="modal-gec006" class="course-card">
-                            <span class="course-code">GEC006 • 3 Units</span>
-                            <div class="course-title">Science, Technology and Society</div>
-                            <div class="course-meta">
-                                <span>Wed 10:00AM - 11:30AM</span>
-                                <span>Room 1701</span>
-                            </div>
-                        </label>
+                    <div>
+                        <div class="section-title">
+                            <span>BSCS 104 Classmates</span>
+                        </div>
 
-                        <label for="modal-gee003" class="course-card">
-                            <span class="course-code">GEE003 • 3 Units</span>
-                            <div class="course-title">Living in the IT Era</div>
-                            <div class="course-meta">
-                                <span>Tue 10:00AM - 11:30AM</span>
-                                <span>Room 1704</span>
-                            </div>
-                        </label>
+                        <div class="team-roster">
+                            <label for="modal-student-nathaniel" class="student-tile">
+                                <div class="student-avatar">NS</div>
+                                <div>
+                                    <div class="student-name">Nathaniel Sanchez</div>
+                                    <div class="student-role">BSCS 104 Student</div>
+                                </div>
+                            </label>
 
-                        <label for="modal-nstp001" class="course-card">
-                            <span class="course-code">NSTP001 • 3 Units</span>
-                            <div class="course-title">National Service Training Program 1</div>
-                            <div class="course-meta">
-                                <span>Mon 10:00AM - 1:00PM</span>
-                                <span>Room 1703</span>
-                            </div>
-                        </label>
+                            <label for="modal-student-elyn" class="student-tile">
+                                <div class="student-avatar">EC</div>
+                                <div>
+                                    <div class="student-name">Elyn Camanag</div>
+                                    <div class="student-role">BSCS 104 Student</div>
+                                </div>
+                            </label>
 
-                        <label for="modal-pe001" class="course-card">
-                            <span class="course-code">PE001 • 2 Units</span>
-                            <div class="course-title">PATHFit1</div>
-                            <div class="course-meta">
-                                <span>Mon 11:00AM - 1:00PM</span>
-                                <span>Room 2607-2608</span>
-                            </div>
-                        </label>
+                            <label for="modal-student-mark" class="student-tile">
+                                <div class="student-avatar">MD</div>
+                                <div>
+                                    <div class="student-name">Mark Cyruz Defelipe</div>
+                                    <div class="student-role">BSCS 104 Student</div>
+                                </div>
+                            </label>
 
-                        <label for="modal-comp101-lec" class="course-card">
-                            <span class="course-code">COMP101 • 3 Units</span>
-                            <div class="course-title">Introduction to Computing</div>
-                            <div class="course-meta">
-                                <span>Wed 3:00PM - 5:00PM</span>
-                                <span>Room 1503</span>
-                            </div>
-                        </label>
+                            <label for="modal-student-micah" class="student-tile">
+                                <div class="student-avatar">MT</div>
+                                <div>
+                                    <div class="student-name">Micah Tapawan</div>
+                                    <div class="student-role">BSCS 104 Student</div>
+                                </div>
+                            </label>
 
-                        <label for="modal-comp101-lab" class="course-card">
-                            <span class="course-code">COMP101 • Lab</span>
-                            <div class="course-title">Intro to Computing (Laboratory)</div>
-                            <div class="course-meta">
-                                <span>Wed 1:00PM - 3:00PM</span>
-                                <span>Room 1301</span>
-                            </div>
-                        </label>
+                            <label for="modal-student-raizhan" class="student-tile">
+                                <div class="student-avatar">RB</div>
+                                <div>
+                                    <div class="student-name">Raizhan Jhoy Bato</div>
+                                    <div class="student-role">BSCS 104 Student</div>
+                                </div>
+                            </label>
 
-                        <label for="modal-comp102-lec" class="course-card">
-                            <span class="course-code">COMP102 • 3 Units</span>
-                            <div class="course-title">Computer Programming 1</div>
-                            <div class="course-meta">
-                                <span>Tue 3:00PM - 5:00PM</span>
-                                <span>Room 1503</span>
-                            </div>
-                        </label>
-
-                        <label for="modal-comp102-lab" class="course-card">
-                            <span class="course-code">COMP102 • Lab</span>
-                            <div class="course-title">Computer Programming 1 (Lab)</div>
-                            <div class="course-meta">
-                                <span>Tue 1:00PM - 3:00PM</span>
-                                <span>Room 1309</span>
-                            </div>
-                        </label>
-
-                        <label for="modal-cosc101" class="course-card">
-                            <span class="course-code">COSC101 • 3 Units</span>
-                            <div class="course-title">Discrete Structures 1</div>
-                            <div class="course-meta">
-                                <span>Mon 1:00PM - 2:30PM</span>
-                                <span>Room 1704</span>
-                            </div>
-                        </label>
-
-                        <label for="modal-regal100" class="course-card">
-                            <span class="course-code">REGAL100 • 1 Unit</span>
-                            <div class="course-title">On Becoming Regals</div>
-                            <div class="course-meta">
-                                <span>Mon 10:00AM - 11:00AM</span>
-                                <span>Room 1703</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="section-title">
-                        <span>BSCS 104 Classmates</span>
-                    </div>
-
-                    <div class="team-roster">
-                        <label for="modal-student-nathaniel" class="student-tile">
-                            <div class="student-avatar">NS</div>
-                            <div>
-                                <div class="student-name">Nathaniel Sanchez</div>
-                                <div class="student-role">BSCS 104 Student</div>
-                            </div>
-                        </label>
-
-                        <label for="modal-student-elyn" class="student-tile">
-                            <div class="student-avatar">EC</div>
-                            <div>
-                                <div class="student-name">Elyn Camanag</div>
-                                <div class="student-role">BSCS 104 Student</div>
-                            </div>
-                        </label>
-
-                        <label for="modal-student-mark" class="student-tile">
-                            <div class="student-avatar">MD</div>
-                            <div>
-                                <div class="student-name">Mark Cyruz Defelipe</div>
-                                <div class="student-role">BSCS 104 Student</div>
-                            </div>
-                        </label>
-
-                        <label for="modal-student-micah" class="student-tile">
-                            <div class="student-avatar">MT</div>
-                            <div>
-                                <div class="student-name">Micah Tapawan</div>
-                                <div class="student-role">BSCS 104 Student</div>
-                            </div>
-                        </label>
-
-                        <label for="modal-student-raizhan" class="student-tile">
-                            <div class="student-avatar">RB</div>
-                            <div>
-                                <div class="student-name">Raizhan Jhoy Bato</div>
-                                <div class="student-role">BSCS 104 Student</div>
-                            </div>
-                        </label>
-
-                        <label for="modal-student-reign" class="student-tile">
-                            <div class="student-avatar">RB</div>
-                            <div>
-                                <div class="student-name">Reign Marien Bato</div>
-                                <div class="student-role">BSCS 104 Student</div>
-                            </div>
-                        </label>
+                            <label for="modal-student-reign" class="student-tile">
+                                <div class="student-avatar">RB</div>
+                                <div>
+                                    <div class="student-name">Reign Marien Bato</div>
+                                    <div class="student-role">BSCS 104 Student</div>
+                                </div>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- TAB 2: PURE CSS TIMETABLE FEATURE -->
+            <div class="tab-pane" id="pane-timetable">
+                <div class="timetable-card">
+                    <div class="section-title">
+                        <span>Weekly Class Timetable</span>
+                    </div>
+
+                    <div class="timetable-row">
+                        <div class="day-badge">MONDAY</div>
+                        <div class="timetable-details">
+                            <div class="timetable-sub">REGAL100, NSTP001, PE001, COSC101</div>
+                            <div class="timetable-meta">10:00AM - 2:30PM • Rooms 1703, 2607-2608, 1704</div>
+                        </div>
+                    </div>
+
+                    <div class="timetable-row">
+                        <div class="day-badge">TUESDAY</div>
+                        <div class="timetable-details">
+                            <div class="timetable-sub">GEE003, COMP102 (Lab & Lec)</div>
+                            <div class="timetable-meta">10:00AM - 5:00PM • Rooms 1704, 1309, 1503</div>
+                        </div>
+                    </div>
+
+                    <div class="timetable-row">
+                        <div class="day-badge">WEDNESDAY</div>
+                        <div class="timetable-details">
+                            <div class="timetable-sub">GEC006, COMP101 (Lab & Lec)</div>
+                            <div class="timetable-meta">10:00AM - 5:00PM • Rooms 1701, 1301, 1503</div>
+                        </div>
+                    </div>
+
+                    <div class="timetable-row">
+                        <div class="day-badge">THURSDAY</div>
+                        <div class="timetable-details">
+                            <div class="timetable-sub">Asynchronous Self-Paced Learning</div>
+                            <div class="timetable-meta">10:00AM - 6:30PM • Online Tasks & Consultations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
